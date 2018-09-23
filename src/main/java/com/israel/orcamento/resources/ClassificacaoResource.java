@@ -1,6 +1,10 @@
 package com.israel.orcamento.resources;
 
 import com.israel.orcamento.domain.Classificacao;
+import com.israel.orcamento.services.ClassificacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,16 +16,13 @@ import java.util.List;
 @RequestMapping(value="/classificacoes")
 public class ClassificacaoResource {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Classificacao> listar() {
-        Classificacao cla1 = new Classificacao(1, "Alimentação", "Almoço");
-        Classificacao cla2 = new Classificacao(1, "Outras", "Outras");
+    @Autowired
+    private ClassificacaoService classificacaoService;
 
-        List<Classificacao> lista = new ArrayList<>();
+    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        Classificacao classificacao = classificacaoService.buscar(id);
 
-        lista.add(cla1);
-        lista.add(cla2);
-
-        return lista;
+        return ResponseEntity.ok().body(classificacao);
     }
 }
